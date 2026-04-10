@@ -1,8 +1,15 @@
-import { Check, ShoppingCart, Flame } from "lucide-react";
+import { Check, ShoppingCart, Flame, Heart, Eye } from "lucide-react";
 import { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
-export function ProductCard({ product }: { product: Product }) {
+interface ProductCardProps {
+  product: Product;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
+  onQuickView?: () => void;
+}
+
+export function ProductCard({ product, isFavorite, onToggleFavorite, onQuickView }: ProductCardProps) {
   const { addToCart, isInCart } = useCart();
   const inCart = isInCart(product.id);
   const finalPrice = product.isOutlet
@@ -10,9 +17,9 @@ export function ProductCard({ product }: { product: Product }) {
     : product.price;
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border bg-card shadow-sm transition-all hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       {product.isOutlet && (
-        <div className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-lg gradient-outlet px-2.5 py-1">
+        <div className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-lg gradient-outlet px-2.5 py-1 animate-bounce-subtle">
           <Flame className="h-3 w-3 text-accent-foreground" />
           <span className="text-xs font-bold text-accent-foreground">-{product.outletDiscount}%</span>
         </div>
@@ -23,11 +30,31 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       )}
 
+      {/* Action buttons on hover */}
+      <div className="absolute right-3 top-3 z-10 flex flex-col gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        {onToggleFavorite && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-card/90 shadow-md backdrop-blur-sm transition-transform hover:scale-110"
+          >
+            <Heart className={`h-4 w-4 transition-colors ${isFavorite ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
+          </button>
+        )}
+        {onQuickView && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onQuickView(); }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-card/90 shadow-md backdrop-blur-sm transition-transform hover:scale-110"
+          >
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </button>
+        )}
+      </div>
+
       <div className="aspect-square overflow-hidden bg-secondary/50">
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
       </div>
 
@@ -46,10 +73,10 @@ export function ProductCard({ product }: { product: Product }) {
 
           <button
             onClick={() => !inCart && addToCart(product)}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all duration-200 ${
               inCart
-                ? "bg-success/10 text-success"
-                : "bg-primary text-primary-foreground hover:bg-primary/90"
+                ? "bg-success/10 text-success scale-95"
+                : "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 active:scale-95"
             }`}
           >
             {inCart ? (
