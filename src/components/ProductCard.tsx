@@ -1,4 +1,4 @@
-import { Check, ShoppingCart, Flame, Heart, Eye } from "lucide-react";
+import { Check, ShoppingCart, Flame, Heart, Eye, Star, AlertCircle } from "lucide-react";
 import { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
@@ -12,12 +12,13 @@ interface ProductCardProps {
 export function ProductCard({ product, isFavorite, onToggleFavorite, onQuickView }: ProductCardProps) {
   const { addToCart, isInCart } = useCart();
   const inCart = isInCart(product.id);
+  const unavailable = product.available === false;
   const finalPrice = product.isOutlet
     ? product.price * (1 - (product.outletDiscount || 0) / 100)
     : product.price;
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div className={`group relative overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${unavailable ? "opacity-70" : ""}`}>
       {product.isOutlet && (
         <div className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-lg gradient-outlet px-2.5 py-1 animate-bounce-subtle">
           <Flame className="h-3 w-3 text-accent-foreground" />
@@ -27,6 +28,12 @@ export function ProductCard({ product, isFavorite, onToggleFavorite, onQuickView
       {product.isNew && !product.isOutlet && (
         <div className="absolute left-3 top-3 z-10 rounded-lg bg-primary px-2.5 py-1">
           <span className="text-xs font-bold text-primary-foreground">Nuevo</span>
+        </div>
+      )}
+      {product.isFeatured && !product.isNew && !product.isOutlet && (
+        <div className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-lg bg-accent/10 backdrop-blur-sm px-2.5 py-1">
+          <Star className="h-3 w-3 text-accent fill-accent" />
+          <span className="text-xs font-bold text-accent">Destacado</span>
         </div>
       )}
 
@@ -50,12 +57,15 @@ export function ProductCard({ product, isFavorite, onToggleFavorite, onQuickView
         )}
       </div>
 
-      <div className="aspect-square overflow-hidden bg-secondary/50">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+      <div className="aspect-square overflow-hidden bg-secondary/50 relative">
+        <img src={product.image} alt={product.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+        {unavailable && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-[2px]">
+            <span className="flex items-center gap-1 rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive">
+              <AlertCircle className="h-3 w-3" /> No disponible
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="p-4">
@@ -72,23 +82,22 @@ export function ProductCard({ product, isFavorite, onToggleFavorite, onQuickView
           </div>
 
           <button
-            onClick={() => !inCart && addToCart(product)}
+            onClick={() => !inCart && !unavailable && addToCart(product)}
+            disabled={unavailable}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all duration-200 ${
               inCart
                 ? "bg-success/10 text-success scale-95"
+                : unavailable
+                ? "bg-secondary text-muted-foreground cursor-not-allowed"
                 : "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 active:scale-95"
             }`}
           >
             {inCart ? (
-              <>
-                <Check className="h-3.5 w-3.5" />
-                <span>En carrito</span>
-              </>
+              <><Check className="h-3.5 w-3.5" /><span>En carrito</span></>
+            ) : unavailable ? (
+              <span>Agotado</span>
             ) : (
-              <>
-                <ShoppingCart className="h-3.5 w-3.5" />
-                <span>Añadir</span>
-              </>
+              <><ShoppingCart className="h-3.5 w-3.5" /><span>Añadir</span></>
             )}
           </button>
         </div>

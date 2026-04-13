@@ -1,13 +1,15 @@
-import { ShoppingCart, Menu, X, ShoppingBag } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { NotificationCenter } from "@/components/NotificationCenter";
 
 const navLinks = [
   { to: "/", label: "Inicio" },
   { to: "/catalogo", label: "Catálogo" },
-  { to: "/admin", label: "Mis Pedidos" },
+  { to: "/admin", label: "Panel" },
+  { to: "/contacto", label: "Contacto" },
   { to: "/faq", label: "FAQ" },
 ];
 
@@ -24,7 +26,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Bounce cart icon when items change
   useEffect(() => {
     if (totalItems > 0) {
       setCartBounce(true);
@@ -45,16 +46,13 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <div className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
               className={`relative rounded-lg px-4 py-2 text-sm font-medium transition-all hover:bg-secondary ${
-                location.pathname === link.to
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                location.pathname === link.to ? "text-primary" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {link.label}
@@ -66,6 +64,15 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <NotificationCenter />
+
+          <Link
+            to="/perfil"
+            className="rounded-xl bg-secondary p-2.5 transition-all hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:shadow-primary/20"
+          >
+            <User className="h-5 w-5" />
+          </Link>
+
           <button
             onClick={() => setIsCartOpen(true)}
             className={`relative rounded-xl bg-secondary p-2.5 transition-all hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:shadow-primary/20 ${cartBounce ? "scale-110" : "scale-100"}`}
@@ -78,18 +85,12 @@ export function Navbar() {
             )}
           </button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
       </div>
 
-      {/* Mobile nav */}
       {mobileOpen && (
         <div className="border-t bg-card px-4 pb-4 md:hidden animate-fade-in">
           {navLinks.map((link) => (
@@ -98,14 +99,15 @@ export function Navbar() {
               to={link.to}
               onClick={() => setMobileOpen(false)}
               className={`block rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                location.pathname === link.to
-                  ? "bg-secondary text-primary"
-                  : "text-muted-foreground"
+                location.pathname === link.to ? "bg-secondary text-primary" : "text-muted-foreground"
               }`}
             >
               {link.label}
             </Link>
           ))}
+          <Link to="/perfil" onClick={() => setMobileOpen(false)} className="block rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground">
+            Mi Perfil
+          </Link>
         </div>
       )}
     </nav>
