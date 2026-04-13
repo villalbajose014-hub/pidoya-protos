@@ -2,21 +2,18 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight, Clock, Flame, Package, CheckCircle2,
-  Zap, Users, Star, ChevronRight, Sparkles, TrendingUp, Shield
+  Zap, Users, Star, ChevronRight, Sparkles, TrendingUp, Shield,
+  Megaphone, Globe, HeadphonesIcon
 } from "lucide-react";
 import { useScrollReveal, useCountUp } from "@/hooks/useAnimations";
 import { useEffect } from "react";
 
-const brands = ["Haribo", "Lays", "Coca-Cola", "Fini", "Vidal", "Sugus", "Doritos", "Pringles", "Fanta", "Halls"];
+const brands = ["Haribo", "Lays", "Coca-Cola", "Fini", "Vidal", "Sugus", "Doritos", "Pringles", "Fanta", "Halls", "Monster", "Cheetos"];
 
 function AnimatedSection({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const { ref, isVisible } = useScrollReveal();
   return (
-    <div
-      ref={ref}
-      className={`${className} transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <div ref={ref} className={`${className} transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: `${delay}ms` }}>
       {children}
     </div>
   );
@@ -25,11 +22,7 @@ function AnimatedSection({ children, className = "", delay = 0 }: { children: Re
 function CounterCard({ target, suffix, label, icon: Icon, color }: { target: number; suffix: string; label: string; icon: React.ElementType; color: string }) {
   const { ref, isVisible } = useScrollReveal();
   const { count, trigger } = useCountUp(target, 1200, true);
-
-  useEffect(() => {
-    if (isVisible) trigger();
-  }, [isVisible, trigger]);
-
+  useEffect(() => { if (isVisible) trigger(); }, [isVisible, trigger]);
   return (
     <div ref={ref} className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-6 text-center transition-all hover:shadow-lg hover:-translate-y-1">
       <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${color}`}>
@@ -45,14 +38,12 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative overflow-hidden gradient-hero px-4 py-20 md:py-28">
-        {/* Animated background particles */}
+      <section className="relative overflow-hidden gradient-hero px-4 py-20 md:py-32">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-primary-foreground/5 animate-float" />
           <div className="absolute -right-10 bottom-10 h-48 w-48 rounded-full bg-primary-foreground/5 animate-float" style={{ animationDelay: "1s" }} />
           <div className="absolute left-1/2 top-10 h-32 w-32 rounded-full bg-primary-foreground/5 animate-float" style={{ animationDelay: "2s" }} />
         </div>
-
         <div className="container relative mx-auto flex flex-col items-center gap-12 md:flex-row">
           <div className="flex-1 text-center md:text-left">
             <div className="mb-4 inline-flex animate-fade-in items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur-sm">
@@ -68,7 +59,7 @@ export default function LandingPage() {
               </span>
             </h1>
             <p className="mt-4 animate-fade-in text-lg text-primary-foreground/80 md:text-xl" style={{ animationDelay: "0.2s" }}>
-              Haz tus pedidos mayoristas en 2 minutos. Sin llamadas, sin esperas.
+              Haz tus pedidos mayoristas en 2 minutos. Sin llamadas, sin esperas. Disponible en Español y Gallego.
             </p>
             <div className="mt-8 flex animate-fade-in flex-wrap justify-center gap-3 md:justify-start" style={{ animationDelay: "0.3s" }}>
               <Link to="/catalogo">
@@ -82,7 +73,6 @@ export default function LandingPage() {
                 </Button>
               </Link>
             </div>
-
             <div className="mt-8 flex animate-fade-in flex-wrap justify-center gap-6 md:justify-start" style={{ animationDelay: "0.4s" }}>
               {[
                 { icon: Users, text: "+150 clientes" },
@@ -95,7 +85,6 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
-
           <div className="flex-1 flex justify-center">
             <div className="w-72 animate-fade-in-right rounded-2xl bg-card p-6 shadow-2xl animate-float" style={{ animationDelay: "0.3s" }}>
               <div className="space-y-3">
@@ -103,11 +92,7 @@ export default function LandingPage() {
                 <div className="h-3 w-32 rounded-full bg-secondary" />
                 <div className="mt-4 space-y-2">
                   {["Haribo Ositos x24", "Lays Clásicas x30", "Coca-Cola x48"].map((item, i) => (
-                    <div
-                      key={item}
-                      className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2 text-xs animate-fade-in"
-                      style={{ animationDelay: `${0.5 + i * 0.15}s` }}
-                    >
+                    <div key={item} className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2 text-xs animate-fade-in" style={{ animationDelay: `${0.5 + i * 0.15}s` }}>
                       <span className="text-foreground font-medium">{item}</span>
                       <CheckCircle2 className="h-4 w-4 text-success" />
                     </div>
@@ -123,7 +108,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Stats counters */}
+      {/* Stats */}
       <section className="px-4 -mt-8 relative z-10">
         <div className="container mx-auto">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -139,14 +124,9 @@ export default function LandingPage() {
       <section className="px-4 py-16 md:py-24">
         <div className="container mx-auto">
           <AnimatedSection>
-            <h2 className="text-center text-3xl font-bold md:text-4xl">
-              Deja de perder tiempo <span className="text-primary">al teléfono</span>
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
-              Compara el proceso tradicional con PidoYA
-            </p>
+            <h2 className="text-center text-3xl font-bold md:text-4xl">Deja de perder tiempo <span className="text-primary">al teléfono</span></h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">Compara el proceso tradicional con PidoYA</p>
           </AnimatedSection>
-
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <AnimatedSection delay={100}>
               <div className="group h-full rounded-2xl border-2 border-destructive/20 bg-destructive/5 p-8 transition-all hover:shadow-lg hover:border-destructive/40">
@@ -158,8 +138,7 @@ export default function LandingPage() {
                 <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                   {["Llamar y esperar", "Dictar productos uno a uno", "Errores frecuentes", "Sin registro del pedido"].map((t) => (
                     <li key={t} className="flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-destructive/10 text-xs text-destructive">✕</span>
-                      {t}
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-destructive/10 text-xs text-destructive">✕</span>{t}
                     </li>
                   ))}
                 </ul>
@@ -177,8 +156,7 @@ export default function LandingPage() {
                 <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                   {["Abre la app y busca", "Añade al carrito", "Envía con 1 clic", "Historial completo"].map((t) => (
                     <li key={t} className="flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-success/10 text-xs text-success">✓</span>
-                      {t}
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-success/10 text-xs text-success">✓</span>{t}
                     </li>
                   ))}
                 </ul>
@@ -188,40 +166,24 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3 Razones */}
+      {/* Features grid — expanded from PRD */}
       <section className="bg-secondary/50 px-4 py-16 md:py-24">
         <div className="container mx-auto">
           <AnimatedSection>
-            <h2 className="text-center text-3xl font-bold md:text-4xl">
-              3 razones para usar <span className="text-primary">PidoYA</span>
-            </h2>
+            <h2 className="text-center text-3xl font-bold md:text-4xl">Todo lo que necesitas <span className="text-primary">en una app</span></h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">Funcionalidades diseñadas para distribuidores B2B</p>
           </AnimatedSection>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              {
-                icon: Zap,
-                title: "Rapidez extrema",
-                desc: "Buscador inteligente con autocompletado. Encuentra entre +1800 productos en segundos.",
-                color: "bg-primary/10 text-primary",
-                gradient: "from-primary/5 to-transparent",
-              },
-              {
-                icon: Flame,
-                title: "Zona Outlet",
-                desc: "Descuentos del 30-40% en productos seleccionados. Rota tu stock y maximiza beneficios.",
-                color: "bg-accent/10 text-accent",
-                gradient: "from-accent/5 to-transparent",
-              },
-              {
-                icon: Package,
-                title: "+1800 productos",
-                desc: "Catálogo completo y actualizado de golosinas, snacks, caramelos y bebidas.",
-                color: "bg-success/10 text-success",
-                gradient: "from-success/5 to-transparent",
-              },
+              { icon: Zap, title: "Rapidez extrema", desc: "Buscador inteligente con autocompletado. Encuentra entre +1800 productos en segundos.", color: "bg-primary/10 text-primary", gradient: "from-primary/5" },
+              { icon: Flame, title: "Zona Outlet", desc: "Descuentos del 30-40%. Rota stock y maximiza beneficios con productos seleccionados.", color: "bg-accent/10 text-accent", gradient: "from-accent/5" },
+              { icon: Package, title: "+1800 productos", desc: "Catálogo completo y actualizado de golosinas, snacks, caramelos y bebidas.", color: "bg-success/10 text-success", gradient: "from-success/5" },
+              { icon: Megaphone, title: "Campañas y ofertas", desc: "Recibe notificaciones push con ofertas exclusivas y novedades personalizadas.", color: "bg-primary/10 text-primary", gradient: "from-primary/5" },
+              { icon: TrendingUp, title: "Dashboard estratégico", desc: "Visualiza métricas de pedidos, clientes activos y top productos.", color: "bg-success/10 text-success", gradient: "from-success/5" },
+              { icon: Globe, title: "Español y Gallego", desc: "Disponible en los dos idiomas. Configuración desde tu perfil.", color: "bg-accent/10 text-accent", gradient: "from-accent/5" },
             ].map(({ icon: Icon, title, desc, color, gradient }, i) => (
-              <AnimatedSection key={title} delay={i * 150}>
-                <div className={`group h-full rounded-2xl border bg-gradient-to-br ${gradient} bg-card p-8 transition-all hover:shadow-xl hover:-translate-y-2 cursor-pointer`}>
+              <AnimatedSection key={title} delay={i * 100}>
+                <div className={`group h-full rounded-2xl border bg-gradient-to-br ${gradient} to-transparent bg-card p-8 transition-all hover:shadow-xl hover:-translate-y-2 cursor-pointer`}>
                   <div className={`mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl ${color} transition-transform group-hover:scale-110`}>
                     <Icon className="h-7 w-7" />
                   </div>
@@ -237,24 +199,21 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Cómo funciona */}
+      {/* How it works */}
       <section className="px-4 py-16 md:py-24">
         <div className="container mx-auto">
           <AnimatedSection>
-            <h2 className="text-center text-3xl font-bold md:text-4xl">
-              Tan fácil como <span className="text-primary">1, 2, 3</span>
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
-              Haz tu primer pedido en menos de 2 minutos
-            </p>
+            <h2 className="text-center text-3xl font-bold md:text-4xl">Tan fácil como <span className="text-primary">1, 2, 3</span></h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">Haz tu primer pedido en menos de 2 minutos</p>
           </AnimatedSection>
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
+          <div className="mt-12 grid gap-8 md:grid-cols-4">
             {[
-              { step: "1", title: "Explora el catálogo", desc: "Busca entre +1800 productos o navega por categorías", icon: "🔍" },
-              { step: "2", title: "Añade al carrito", desc: "Selecciona productos y ajusta cantidades fácilmente", icon: "🛒" },
-              { step: "3", title: "Envía tu pedido", desc: "Con un clic tu pedido llega directamente al distribuidor", icon: "✅" },
+              { step: "1", title: "Regístrate gratis", desc: "Alta autónoma con email o teléfono. Sin permanencia.", icon: "👤" },
+              { step: "2", title: "Explora el catálogo", desc: "Busca entre +1800 productos o navega por categorías", icon: "🔍" },
+              { step: "3", title: "Añade al carrito", desc: "Selecciona productos y ajusta cantidades fácilmente", icon: "🛒" },
+              { step: "4", title: "Envía tu pedido", desc: "Con un clic tu pedido llega directamente al distribuidor", icon: "✅" },
             ].map(({ step, title, desc, icon }, i) => (
-              <AnimatedSection key={step} delay={i * 200}>
+              <AnimatedSection key={step} delay={i * 150}>
                 <div className="relative flex flex-col items-center text-center">
                   <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-3xl text-primary-foreground shadow-lg shadow-primary/25 transition-transform hover:scale-110">
                     {icon}
@@ -275,22 +234,18 @@ export default function LandingPage() {
       <section className="bg-secondary/30 px-4 py-16 md:py-24">
         <div className="container mx-auto">
           <AnimatedSection>
-            <h2 className="text-center text-3xl font-bold md:text-4xl">
-              Lo que dicen nuestros <span className="text-primary">clientes</span>
-            </h2>
+            <h2 className="text-center text-3xl font-bold md:text-4xl">Lo que dicen nuestros <span className="text-primary">clientes</span></h2>
           </AnimatedSection>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { name: "María G.", business: "Kiosko La Esquina", text: "Antes tardaba 20 minutos por teléfono. Ahora hago el pedido en 2 minutos desde el móvil. ¡Increíble!", stars: 5 },
-              { name: "Carlos R.", business: "Bar El Puerto", text: "La zona Outlet es genial. Consigo ofertas que antes ni sabía que existían. Ahorro un 25% cada mes.", stars: 5 },
-              { name: "Ana P.", business: "Gasolinera Repsol", text: "Repetir pedido con un clic es la función que más uso. Sencillo, rápido y sin errores.", stars: 5 },
-            ].map(({ name, business, text, stars }, i) => (
+              { name: "María G.", business: "Kiosko La Esquina", type: "Kiosco", text: "Antes tardaba 20 minutos por teléfono. Ahora hago el pedido en 2 minutos desde el móvil. ¡Increíble!", stars: 5 },
+              { name: "Carlos R.", business: "Bar El Puerto", type: "Bar", text: "La zona Outlet es genial. Consigo ofertas que antes ni sabía que existían. Ahorro un 25% cada mes.", stars: 5 },
+              { name: "Ana P.", business: "Gasolinera Repsol", type: "Gasolinera", text: "Repetir pedido con un clic es la función que más uso. Sencillo, rápido y sin errores.", stars: 5 },
+            ].map(({ name, business, type, text, stars }, i) => (
               <AnimatedSection key={name} delay={i * 150}>
                 <div className="h-full rounded-2xl border bg-card p-6 transition-all hover:shadow-lg hover:-translate-y-1">
                   <div className="flex gap-0.5 text-accent">
-                    {Array.from({ length: stars }).map((_, s) => (
-                      <Star key={s} className="h-4 w-4 fill-current" />
-                    ))}
+                    {Array.from({ length: stars }).map((_, s) => (<Star key={s} className="h-4 w-4 fill-current" />))}
                   </div>
                   <p className="mt-3 text-sm text-muted-foreground italic">"{text}"</p>
                   <div className="mt-4 flex items-center gap-3">
@@ -299,7 +254,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <p className="text-sm font-semibold">{name}</p>
-                      <p className="text-xs text-muted-foreground">{business}</p>
+                      <p className="text-xs text-muted-foreground">{business} · {type}</p>
                     </div>
                   </div>
                 </div>
@@ -309,7 +264,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Marcas */}
+      {/* Brands */}
       <section className="px-4 py-16 overflow-hidden">
         <div className="container mx-auto">
           <AnimatedSection>
@@ -317,7 +272,7 @@ export default function LandingPage() {
           </AnimatedSection>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             {brands.map((brand, i) => (
-              <AnimatedSection key={brand} delay={i * 80}>
+              <AnimatedSection key={brand} delay={i * 60}>
                 <div className="rounded-xl bg-card px-6 py-3 text-sm font-bold text-muted-foreground shadow-sm border transition-all hover:shadow-md hover:-translate-y-1 hover:text-primary cursor-default">
                   {brand}
                 </div>
@@ -335,6 +290,7 @@ export default function LandingPage() {
               { icon: Shield, text: "Datos protegidos" },
               { icon: TrendingUp, text: "Sin cuotas" },
               { icon: CheckCircle2, text: "Soporte incluido" },
+              { icon: HeadphonesIcon, text: "Atención personalizada" },
             ].map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-center gap-2">
                 <Icon className="h-4 w-4 text-primary" /> {text}
@@ -353,37 +309,64 @@ export default function LandingPage() {
               <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-primary-foreground/5 animate-float" style={{ animationDelay: "1.5s" }} />
             </div>
             <div className="relative">
-              <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">
-                ¿Listo para simplificar tus pedidos?
-              </h2>
-              <p className="mt-3 text-primary-foreground/80">
-                Únete a más de 150 negocios que ya usan PidoYA
-              </p>
-              <Link to="/catalogo">
-                <Button className="mt-8 h-12 rounded-xl bg-accent px-10 text-base font-bold text-accent-foreground shadow-lg shadow-accent/25 transition-all hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5">
-                  Empezar gratis <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">¿Listo para simplificar tus pedidos?</h2>
+              <p className="mt-3 text-primary-foreground/80">Únete a más de 150 negocios que ya usan PidoYA</p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link to="/catalogo">
+                  <Button className="h-12 rounded-xl bg-accent px-10 text-base font-bold text-accent-foreground shadow-lg shadow-accent/25 transition-all hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5">
+                    Empezar gratis <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/contacto">
+                  <Button variant="outline" className="h-12 rounded-xl border-primary-foreground/30 bg-transparent px-8 text-base font-medium text-primary-foreground hover:bg-primary-foreground/10">
+                    Contactar
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </AnimatedSection>
 
       {/* Footer */}
-      <footer className="border-t bg-card px-4 py-8">
-        <div className="container mx-auto flex flex-col items-center gap-4 md:flex-row md:justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-hero">
-              <span className="text-xs font-bold text-primary-foreground">PY</span>
+      <footer className="border-t bg-card px-4 py-12">
+        <div className="container mx-auto">
+          <div className="grid gap-8 md:grid-cols-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-hero">
+                  <span className="text-xs font-bold text-primary-foreground">PY</span>
+                </div>
+                <span className="font-bold">Pido<span className="text-primary">YA</span></span>
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground">Plataforma B2B de pedidos mayoristas para distribuidores de alimentación.</p>
             </div>
-            <span className="font-bold">Pido<span className="text-primary">YA</span></span>
+            <div>
+              <h4 className="font-semibold text-sm mb-3">Plataforma</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <Link to="/catalogo" className="block hover:text-primary transition-colors">Catálogo</Link>
+                <Link to="/admin" className="block hover:text-primary transition-colors">Panel de control</Link>
+                <Link to="/perfil" className="block hover:text-primary transition-colors">Mi perfil</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold text-sm mb-3">Soporte</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <Link to="/faq" className="block hover:text-primary transition-colors">FAQ</Link>
+                <Link to="/contacto" className="block hover:text-primary transition-colors">Contacto</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold text-sm mb-3">Contacto</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>pedidos@pidoya.es</p>
+                <p>981 123 456</p>
+                <p>A Coruña, Galicia</p>
+              </div>
+            </div>
           </div>
-          <p className="text-center text-sm text-muted-foreground">
-            © 2026 PidoYA. Plataforma B2B de pedidos mayoristas.
-          </p>
-          <div className="flex gap-4 text-sm text-muted-foreground">
-            <Link to="/faq" className="hover:text-primary transition-colors">FAQ</Link>
-            <Link to="/catalogo" className="hover:text-primary transition-colors">Catálogo</Link>
+          <div className="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
+            © 2026 PidoYA. Todos los derechos reservados.
           </div>
         </div>
       </footer>

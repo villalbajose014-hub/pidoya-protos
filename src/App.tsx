@@ -10,6 +10,8 @@ import LandingPage from "@/pages/LandingPage";
 import CatalogPage from "@/pages/CatalogPage";
 import AdminPage from "@/pages/AdminPage";
 import FAQPage from "@/pages/FAQPage";
+import ProfilePage from "@/pages/ProfilePage";
+import ContactPage from "@/pages/ContactPage";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/catalogo" element={<CatalogPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/contacto" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
